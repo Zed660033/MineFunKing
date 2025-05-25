@@ -1,0 +1,23 @@
+{
+  "name": "MineFunKing",
+  "version": "2.0.2",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "electron .",
+    "dist": "electron-builder --config -p always"
+  },
+  "author": "November2246",
+  "license": "ISC",
+  "dependencies": {
+    "electron-localshortcut": "^3.2.1",
+    "electron-log": "^5.1.2",
+    "electron-store": "^8.2.0",
+    "toastify-js": "^1.12.0"
+  },
+  "devDependencies": {
+    "electron": "^36.1.0",
+    "electron-builder": "^24.13.3",
+    "eslint": "^8.57.0"
+  }
+}

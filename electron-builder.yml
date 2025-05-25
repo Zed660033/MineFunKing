@@ -1,0 +1,24 @@
+appId: com.november.minefunking
+productName: 'MineFunKing' 
+icon: icon.png
+
+nsis:
+  artifactName: ${name}-${os}-setup-${version}-${arch}.${ext}
+  oneClick: false
+  perMachine: false
+  allowToChangeInstallationDirectory: true
+
+publish:
+  provider: github
+  repo: MineFunKing
+  owner: November2246
+
+npmRebuild: false
+
+files:
+  - "**/*"
+  - "!.eslintrc"
+  - "!.github"
+  - "!MineFunKing.code-workspace"
+  - "!.vscode"
+  - "!.gitignore"
