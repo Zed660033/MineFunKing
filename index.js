@@ -13,8 +13,7 @@ const {
 require('./js/utils/flagHandler').applyFlags(settingsCache);
 
 const fetchCache = {};
-
-const fetchScript = async (url) => {
+const fetchScript = async (key, url) => {
     if (!url) return;
 
     return await fetch(url)
@@ -26,42 +25,21 @@ const fetchScript = async (url) => {
             }
 
             const userscript = txt.slice(txt.lastIndexOf('==/UserScript==') + 15);
-            fetchCache[url] = userscript;
+            fetchCache[key] = userscript;
 
             return userscript;
         });
 };
 
-fetchScript('https://update.greasyfork.org/scripts/535203/MineFun%20King.user.js'); // Fetch on launch to cache
-fetchScript('https://update.greasyfork.org/scripts/536576/MineFun%20Chat%20Translator.user.js'); // Fetch on launch to cache
-
-ipcMain.handle('getUserscript', async (e, url) => {
-    return fetchCache[url] || (await fetchScript(url));
-});
+fetchScript('cheat', 'https://update.greasyfork.org/scripts/535203/MineFun%20King.user.js');
+fetchScript('autoTranslate', 'https://update.greasyfork.org/scripts/536576/MineFun%20Chat%20Translator.user.js');
 
 ipcMain.on('updateSettingsCache', (e, key, val) => {
     updateSettingsCache(key, val);
 });
 
-ipcMain.handle('openFileDialog', (e, title = '', filtersArr = []) => {
-    const result = dialog.showOpenDialogSync(null, {
-        properties: ['openFile'],
-        title: '[MineFunKing] ' + title,
-        defaultPath: '.',
-        filters: filtersArr
-    });
-    return result;
-});
-
-let toastQueue = [];
-ipcMain.on('addToast', (e, toast) => {
-    toastQueue.push(toast);
-});
-ipcMain.handle('getToasts', () => {
-    toastQueue = toastQueue.filter(
-        (toast) => toast.expireAt && Date.now() < toast.expireAt
-    );
-    return toastQueue;
+ipcMain.handle('getUserscript', (e, key) => {
+    return fetchCache[key];
 });
 
 app.on('window-all-closed', () => {

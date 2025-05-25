@@ -1,5 +1,5 @@
 const fs = require('fs');
-const { BrowserWindow, shell, clipboard, app } = require('electron');
+const { BrowserWindow, shell, clipboard } = require('electron');
 const path = require('path');
 const localShortcut = require('electron-localshortcut');
 const log = require('electron-log');
@@ -71,9 +71,11 @@ class GameWindow {
         win.once('ready-to-show', () => {
             win.show();
         });
+
         win.on('page-title-updated', (e) => {
             e.preventDefault();
         });
+
         win.webContents.on('new-window', (e, url) => {
             e.preventDefault();
             if (String(url).startsWith('https://')) shell.openExternal(url);
@@ -98,13 +100,6 @@ class GameWindow {
                         hostname = '';
                     }
                     if (hostname === 'minefun.io') {
-                        log.info(`[Join Hotkey] Attempting to join '${txt}'`);
-                        win.loadURL(txt);
-                    } else {
-                        txt =
-                            'https://minefun.io/' + txt.startsWith('#')
-                                ? txt
-                                : '#' + txt;
                         log.info(`[Join Hotkey] Attempting to join '${txt}'`);
                         win.loadURL(txt);
                     }
@@ -152,10 +147,6 @@ class GameWindow {
             }
         });
 
-        win.webContents.session.clearCache().then(() => {
-            win.loadURL('https://minefun.io/');
-        });
-
         win.on('close', () => {
             if (
                 windows.settingsWindow.win &&
@@ -180,6 +171,10 @@ class GameWindow {
             windows.settingsWindow.win = null;
         });
 
+        win.webContents.session.clearCache().then(() => {
+            win.loadURL('https://minefun.io/');
+        });
+
         return win;
     }
 }
@@ -188,7 +183,7 @@ class SettingsWindow {
     constructor() {
         const win = new BrowserWindow({
             width: 400,
-            height: 346,
+            height: 270,
             fullscreen: false,
             maximizable: false,
             resizable: false,
@@ -213,14 +208,14 @@ class SettingsWindow {
             e.preventDefault();
         });
 
-        win.loadURL(path.join(__dirname, '../../html/settings.html'));
-
         win.on('close', () => {
             const windowPosition = win.getPosition();
             config.set('window2.x', windowPosition[0]);
             config.set('window2.y', windowPosition[1]);
             windows.settingsWindow.win = null;
         });
+
+        win.loadURL(path.join(__dirname, '../../html/settings.html'));
 
         return win;
     }

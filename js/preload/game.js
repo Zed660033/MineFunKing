@@ -20,16 +20,16 @@ ipcRenderer.on('settingsCacheUpdated', (e, newSettingsCache, key, val) => {
     mfkLog('settingsCache Updated:', key, val);
 });
 
-const fetchAndExecuteScript = async (url) => {
-    ipcRenderer.invoke('getUserscript', url).then(cheat => {
+const fetchAndExecuteScript = async (key) => {
+    ipcRenderer.invoke('getUserscript', key).then(cheat => {
         if (cheat) webFrame.executeJavaScript(cheat);
     }).catch(err => {
-        console.error('[Cheat] Error:', err);
+        console.error('[webFrame.executeJavaScript] Error:', err);
     });
 };
 
-if (settingsCache.enableCheats) fetchAndExecuteScript('https://update.greasyfork.org/scripts/535203/MineFun%20King.user.js');
-if (settingsCache.autoTranslate) fetchAndExecuteScript('https://update.greasyfork.org/scripts/536576/MineFun%20Chat%20Translator.user.js');
+if (settingsCache.enableCheats) fetchAndExecuteScript('cheat');
+if (settingsCache.autoTranslate) fetchAndExecuteScript('autoTranslate');
 
 document.addEventListener('keydown', (event) => {
     if (event?.key === 'Escape' || event?.keyCode === 27) {
