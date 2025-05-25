@@ -1,7 +1,7 @@
 {
   "name": "MineFunKing",
-  "version": "2.0.2",
-  "description": "",
+  "version": "1.0.0",
+  "description": "Cheat Client for MineFun.io",
   "main": "index.js",
   "scripts": {
     "start": "electron .",
