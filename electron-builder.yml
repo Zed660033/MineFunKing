@@ -8,9 +8,6 @@ win:
     - target: nsis
       arch:
         - x64
-    - target: nsis
-      arch:
-        - ia32
 
 linux:
   artifactName: ${name}-${os}-portable-${version}-${arch}.${ext}
@@ -18,9 +15,6 @@ linux:
     - target: AppImage
       arch:
         - x64
-    - target: AppImage
-      arch:
-        - ia32
   category: Game
 
 mac:
